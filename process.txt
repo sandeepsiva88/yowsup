@@ -1,0 +1,89 @@
+Update the packages with.
+
+sudo apt-get upgrade
+Update firmware.
+
+sudo rpi-update
+Prepare the system with the necessary components to Yowsup.
+
+sudo apt-get install python-dateutil
+sudo apt-get install python-setuptools
+sudo apt-get install python-dev
+sudo apt-get install libevent-dev
+sudo apt-get install ncurses-dev
+Download the library with the command.
+
+git clone git://github.com/jlguardi/yowsup
+Navigate to the folder.
+
+cd yowsup
+And install the library with the command.
+
+sudo python setup.py install
+note if error occured here with something like disable-jpeg
+
+write the following command
+
+sudo apt-get install 
+Then run setup again.
+
+After installing the library we have to register the device to use WhatsApp.
+
+First you need to request a registration code.
+
+python yowsup-cli registration --requestcode sms --phone 39xxxxxxxxxx --cc 39 --mcc 222 --mnc 10
+you can find your specific country code , mcc , mnc online from this link :
+
+http://www.mcc-mnc.com
+
+and replace the command with your data then You should receive on your phone a sms message with a code like xxx-xxx
+
+Send a message to request registration with this command, (replace xxx-xxx with code you received)
+
+python yowsup-cli registration --register xxx-xxx --phone 39xxxxxxxxxx --cc 39
+If all goes well, we should get a message like this
+
+status: ok
+kind: free
+pw: xxxxxxxxxxxxxxxxxx=
+price: € 0,89
+price_expiration: 1416553637
+currency: EUR
+cost: 0.89
+expiration: 1445241022
+login: 39xxxxxxxxxxx
+type: existing
+Warning
+
+WhatsApp requires the registration of a number, and with that number you can use WhatsApp on only one device at a time
+
+WhatsApp can be used on one device at a time and if you will make many attempts to register the number, it could be banned.
+
+Create a file to save your credentials.
+
+sudo nano /home/pi/yowsup/config
+With this content.
+
+## Actual config starts below ##
+cc=39 #if not specified it will be autodetected
+phone=39xxxxxxxxxx
+password=xxxxxxxxxxxxxxx=
+Ok, we're ready for the test, Yowsup has a demo application in /home/pi/yowsup/yowsup/demos
+
+Navigate to yowsup folder.
+
+cd /home/pi/yowsup
+Start yowsup-cli demos with the command.
+
+yowsup-cli demos --yowsup --config config
+You can see Yowsup prompt.
+
+If type "/help" you can see all available commands.
+
+First use the '/L' command for login; to send a message type.
+
+/message send 39xxxxxxxxxx "This is a message sent from Raspberry Pi"
+Replace xxx with the recipient number
+
+And IT WORKED
+
